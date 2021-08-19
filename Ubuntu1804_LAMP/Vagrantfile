@@ -1,0 +1,22 @@
+Vagrant.configure("2") do |config|
+config.vm.box = "ubuntu/bionic64"
+config.vm.network "forwarded_port", guest: 80, host: 8080
+config.vm.synced_folder "data", "/var/www/html"
+config.vm.provider "virtualbox" do |vb|
+vb.memory = 4096
+vb.cpus = 4
+end
+config.vm.provision "shell", inline: <<-SHELL
+	apt-get update
+	apt-get install -y curl nano wget
+	apt-get -y install apache2 php mysql-server mysql-client
+	MYSQL_SERVER_PASS="MYSQL_SERVER_PASS"
+	mysql -uroot -D mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '${MYSQL_SERVER_PASS}'"
+	echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" | debconf-set-selections
+	echo "phpmyadmin phpmyadmin/mysql/app-pass password ${MYSQL_SERVER_PASS}" | debconf-set-selections
+	echo "phpmyadmin phpmyadmin/mysql/admin-pass password ${MYSQL_SERVER_PASS}" | debconf-set-selections
+	echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | debconf-set-selections
+	apt-get -y install phpmyadmin
+	ip a | grep -i -w inet
+	SHELL
+end
