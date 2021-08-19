@@ -1,0 +1,21 @@
+Vagrant.configure("2") do |config|
+config.vm.box = "centos/8"
+config.vm.network "public_network"
+config.vm.provider "virtualbox" do |vb|
+vb.memory = 4092
+vb.cpus = 4
+end
+config.vm.provision "shell", inline: <<-SHELL
+hostnamectl set-hostname r7office
+yum check-update
+yum -y install glibc-locale-source glibc-langpack-en glibc-langpack-ru curl nano wget firewalld
+localedef -f UTF-8 -i en_US en_US.utf-8
+systemctl enable --now firewalld
+firewall-cmd --permanent --zone=public --add-port=22/tcp
+yum -y install kernel kernel-core kernel-modules bash centos-linux-release openssh openssh-clients openssh-server sudo yum yum-utils
+wget https://download.r7-office.ru/repo/install-RedHat.sh
+bash install-RedHat.sh
+firewall-cmd --reload
+ip a | grep -i -w inet
+SHELL
+end
