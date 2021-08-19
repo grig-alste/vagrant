@@ -1,11 +1,11 @@
 Vagrant.configure("2") do |config|
 config.vm.box = "ubuntu/bionic64"
 config.vm.network "public_network"
-config.vm.synced_folder "r7-office/log", "/var/log/r7-office"
-config.vm.synced_folder "r7-office/Data", "/var/www/r7-office/Data"
+#config.vm.synced_folder "r7-office/log", "/var/log/r7-office"
+#config.vm.synced_folder "r7-office/Data", "/var/www/r7-office/Data"
 config.vm.provider "virtualbox" do |vb|
-vb.memory = 8192
-vb.cpus = 8
+vb.memory = 4092
+vb.cpus = 4
 end
 config.vm.provision "shell", inline: <<-SHELL
 	apt-get update
