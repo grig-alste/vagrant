@@ -1,6 +1,13 @@
 Vagrant.configure("2") do |config|
 config.vm.box = "ubuntu/bionic64"
+config.vm.box_check_update = false
+config.vm.hostname = "r7office"
+## Forwarded port from NAT
+#config.vm.network "forwarded_port", guest: 80, host: 80
+#config.vm.network "forwarded_port", guest: 443, host: 443
 config.vm.network "public_network"
+config.vm.define "ubuntu_r7office"
+## Mount folder "data" to VM "/var/www/html" 
 #config.vm.synced_folder "r7-office/log", "/var/log/r7-office"
 #config.vm.synced_folder "r7-office/Data", "/var/www/r7-office/Data"
 config.vm.provider "virtualbox" do |vb|
