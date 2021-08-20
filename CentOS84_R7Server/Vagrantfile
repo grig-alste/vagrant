@@ -15,7 +15,6 @@ vb.memory = 4092
 vb.cpus = 4
 end
 config.vm.provision "shell", inline: <<-SHELL
-hostnamectl set-hostname r7office
 yum check-update
 yum -y install glibc-locale-source glibc-langpack-en glibc-langpack-ru curl nano wget firewalld
 localedef -f UTF-8 -i en_US en_US.utf-8
