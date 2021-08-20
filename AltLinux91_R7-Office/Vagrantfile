@@ -2,8 +2,14 @@ Vagrant.configure("2") do |config|
 config.vm.box = "BaseALT/alt-server-9.1-amd64"
 config.vm.box_check_update = false
 config.vm.hostname = "r7office" 
-config.vm.network "forwarded_port", guest: 80, host: 8080
+## Forwarded port from NAT
+#config.vm.network "forwarded_port", guest: 80, host: 80
+#config.vm.network "forwarded_port", guest: 443, host: 443
+config.vm.network "public_network"
 config.vm.define "altserver_r7office"
+## Mount folder "data" to VM "/var/www/html" 
+#config.vm.synced_folder "r7-office/log", "/var/log/r7-office"
+#config.vm.synced_folder "r7-office/Data", "/var/www/r7-office/Data"
 config.vm.provider "virtualbox" do |vb|
 vb.memory = "1024"
 vb.cpus = 4
